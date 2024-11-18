@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<head>
+  <title>환자 상세</title>
+  <link rel="stylesheet" th:inline="css" th:href="@{/css/mmenu/patient_details.css}">
+
+  <script th:inline="javascript" type="text/javascript" th:src="@{/js/main.js}"></script>
+  <script th:inline="javascript" type="text/javascript" th:src="@{/js/mmenu1/patient_details.js}"></script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+
+<th:block layout:fragment="content">
+  <div class="content container mt-4">
+    <h2>환자 상세 정보</h2>
+
+    <!-- 환자 이름 입력 폼 -->
+    <form th:action="@{/patient/search}" method="get" class="mb-4">
+      <div class="form-group">
+        <label for="patientName">환자 이름 입력:</label>
+        <input type="text" id="patientName" name="patientName" class="form-control" placeholder="환자 이름을 입력하세요" required>
+      </div>
+      <button type="submit" class="btn btn-primary">조회</button>
+    </form>
+
+    <!-- 환자 정보 -->
+    <div class="card">
+      <div class="card-header">
+        <h4 th:text="${patient != null ? patient.name + '님의 정보' : '환자 정보를 입력하세요'}"></h4>
+      </div>
+      <div class="card-body">
+        <!-- 환자 정보 표시 (동일) -->
+        <p><strong>환자 ID:</strong> <span th:text="${patient != null ? patient.patient_id : '정보가 없습니다'}"></span></p>
+        <p><strong>이름:</strong> <span th:text="${patient != null ? patient.name : '정보가 없습니다'}"></span></p>
+        <p><strong>전화번호:</strong> <span th:text="${patient != null ? patient.phonenumber : '정보가 없습니다'}"></span></p>
+        <p><strong>이메일:</strong> <span th:text="${patient != null ? patient.email : '정보가 없습니다'}"></span></p>
+        <p><strong>성별:</strong> <span th:text="${patient != null ? patient.gender : '정보가 없습니다'}"></span></p>
+        <p><strong>등록일:</strong> <span th:text="${patient != null ? patient.created_at : '정보가 없습니다'}"></span></p>
+        <p><strong>수정일:</strong> <span th:text="${patient != null ? patient.updated_at : '정보가 없습니다'}"></span></p>
+
+        <!-- 환자 정보 수정 (동일) -->
+        <div th:if="${patient != null}" class="mt-4">
+          <h4>환자 정보 수정</h4>
+          <form th:action="@{/patient/update}" method="post">
+            <input type="hidden" name="patient_id" th:value="${patient.patient_id}">
+            <div class="form-group">
+              <label for="name">이름:</label>
+              <input type="text" id="name" name="name" class="form-control" th:value="${patient.name}" required>
+            </div>
+            <div class="form-group">
+              <label for="phonenumber">전화번호:</label>
+              <input type="text" id="phonenumber" name="phonenumber" class="form-control" th:value="${patient.phonenumber}" required>
+            </div>
+            <div class="form-group">
+              <label for="email">이메일:</label>
+              <input type="email" id="email" name="email" class="form-control" th:value="${patient.email}" required>
+            </div>
+            <div class="form-group">
+              <label for="gender">성별:</label>
+              <select id="gender" name="gender" class="form-control" required>
+                <option value="남성" th:selected="${patient.gender == '남성'}">남성</option>
+                <option value="여성" th:selected="${patient.gender == '여성'}">여성</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">수정</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 예약 목록 -->
+    <h3 class="mt-4">예약 목록</h3>
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>예약 ID</th>
+            <th>예약 날짜</th>
+            <th>시간</th>
+            <th>상태</th>
+            <th>치료 항목</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="reservation : ${reservations}">
+            <td th:text="${reservation.reservation_id}"></td>
+            <td th:text="${reservation.reservation_date}"></td>
+            <td th:text="${reservation.hour_select} + ':' + ${reservation.minutes_select}"></td>
+            <td th:text="${reservation.status}"></td>
+            <td th:text="${reservation.treatment1} + ' ' + ${reservation.treatment2}"></td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(reservations)}">
+            <td colspan="5">예약이 없습니다.</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 환자 등록 버튼 (모달 열기) -->
+    <button type="button" class="btn btn-success mt-4" data-bs-toggle="modal" data-bs-target="#registerModal">
+      새 환자 등록
+    </button>
+
+    <!-- 모달 창 -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="registerModalLabel">환자 등록</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form th:action="@{/patient/create}" method="post">
+              <div class="form-group">
+                <label for="registerName">이름:</label>
+                <input type="text" id="registerName" name="name" class="form-control" placeholder="이름을 입력하세요" required>
+              </div>
+              <div class="form-group">
+                <label for="registerPhonenumber">전화번호:</label>
+                <input type="text" id="registerPhonenumber" name="phonenumber" class="form-control" placeholder="전화번호를 입력하세요" required>
+              </div>
+              <div class="form-group">
+                <label for="registerEmail">이메일:</label>
+                <input type="email" id="registerEmail" name="email" class="form-control" placeholder="이메일을 입력하세요" required>
+              </div>
+              <div class="form-group">
+                <label for="registerGender">성별:</label>
+                <select id="registerGender" name="gender" class="form-control" required>
+                  <option value="남성">남성</option>
+                  <option value="여성">여성</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success">등록</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</th:block>

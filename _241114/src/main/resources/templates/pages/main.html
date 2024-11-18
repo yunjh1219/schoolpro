@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/default_layout}">
+<head>
+    <title>main homepage</title>
+    <link rel="stylesheet" th:inline="css" th:href="@{/css/main.css}">
+    <script th:inline="javascript" type="text/javascript" th:src="@{/js/main.js}"></script>
+</head>
+<th:block layout:fragment="content">
+<div class="content">
+
+    <div class="image-container">
+        <img src="/img/backimg1.jpg" alt="이미지 설명" class="slide active">
+        <img src="/img/backimg2.jpg" alt="이미지 설명" class="slide">
+        <img src="/img/backimg3.jpg" alt="이미지 설명" class="slide">
+
+        <!-- 슬라이더 네비게이션 도트 -->
+        <div class="nav-dots">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+        </div>
+    </div>
+
+    <h1>메인 사이트 꾸밀 예정</h1>
+    <h1>메인 사이트 꾸밀 예정</h1>
+    <h1>메인 사이트 꾸밀 예정</h1>
+    <h1>메인 사이트 꾸밀 예정</h1>
+    <h1>메인 사이트 꾸밀 예정</h1>
+
+
+
+</div>
+</th:block>
+</html>
