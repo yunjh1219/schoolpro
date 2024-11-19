@@ -32,7 +32,7 @@ public class PatientController {
     public String searchPatient(@RequestParam("patientName") String patientName, Model model) {
         Patient patient = patientService.findByName(patientName); // patientService를 사용
         model.addAttribute("patient", patient);
-        return "pages/patient_details"; // 환자 상세 페이지 템플릿 경로 명시
+        return "pages/patient_info"; // 환자 상세 페이지 템플릿 경로 명시
     }
 
     // 환자 정보 수정
@@ -52,7 +52,7 @@ public class PatientController {
             patientRepository.save(patient);
             model.addAttribute("patient", patient);
             model.addAttribute("reservations", patient.getReservations());
-            return "pages/patient_details";  // 환자 상세 페이지로 다시 이동
+            return "pages/patient_info";  // 환자 상세 페이지로 다시 이동
         } else {
             model.addAttribute("error", "Patient not found");
             return "error";  // 환자가 존재하지 않으면 error 페이지로 이동
@@ -80,8 +80,9 @@ public class PatientController {
         model.addAttribute("message", "환자 등록이 완료되었습니다.");
 
         // 환자 목록 페이지로 리다이렉트
-        return "pages/patient_details";
+        return "pages/patient_info";
     }
 }
+
 
 

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+  <title>환자 목록</title>
+  <link rel="stylesheet" th:inline="css" th:href="@{/css/user/user1.css}">
+  <link rel="stylesheet" th:inline="css" th:href="@{/css/user/patientlist.css}">
+  <link rel="stylesheet" th:inline="css" th:href="@{/css/user/patientmodal.css}">
+
+  <script defer th:src="@{/js/user/patientmodal.js}"></script>
+
+</head>
+<th:block layout:fragment="content">
+  <div class="content">
+    <div class="patient-list">
+      <h2>환자 목록</h2>
+
+      <!-- 검색 폼 추가 -->
+      <form class="patientlist_btn">
+
+        <div class="search-section">
+          <select name="searchType" th:value="${searchType}">
+            <option value="name" th:selected="${searchType == 'name'}">환자 이름</option>
+            <option value="patient_id" th:selected="${searchType == 'patient_id'}">환자 번호</option>
+            <option value="phonenumber" th:selected="${searchType == 'phonenumber'}">전화번호</option>
+          </select>
+          <input type="text" name="search" placeholder="검색어 입력" th:value="${search}" />
+          <button type="submit">검색</button>
+        </div>
+
+        <button type="submit" name="reset" value="true" class="reset-btn">전체 목록 보기</button>
+        <button type="button" id="openaddModal" class="btn-modal-update">환자추가</button>
+      </form>
+
+      <table>
+        <thead>
+        <tr>
+          <th>환자 번호</th>
+          <th>이름</th>
+          <th>전화번호</th>
+          <th>이메일</th>
+          <th>성별</th>
+          <th>등록일</th>
+          <th>수정일</th>
+          <th>자세히</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="patient : ${patients}">
+          <td th:text="${patient.patientId}"></td> <!-- 환자 번호 -->
+          <td th:text="${patient.name}"></td> <!-- 환자 이름 -->
+          <td th:text="${patient.phonenumber}"></td> <!-- 환자 전화번호 -->
+          <td th:text="${patient.email}"></td> <!-- 환자 이메일 -->
+          <td th:text="${patient.gender}"></td> <!-- 환자 성별 -->
+          <td th:text="${patient.created_at}"></td> <!-- 환자 등록일 -->
+          <td th:text="${patient.updated_at}"></td> <!-- 환자 수정일 -->
+          <td>
+            <!-- 자세히 보기 버튼 (환자 ID를 파라미터로 전달) -->
+            <button type="button" id="detailMoadl" class="btn-modal-detail">자세히보기</button>
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      
+      <!-- 환자 추가 모달 -->
+      <div id="patientaddModal" class="modal">
+        <div class="modal-content">
+          <span class="close-btn" id="closeaddModal">&times;</span>
+          <h3>환자 추가</h3>
+          <form action="/patient/add" method="post" id="patientForm">
+            <label for="name">이름:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone">전화번호:</label>
+            <input type="text" id="phone" name="phonenumber" required>
+
+            <label for="email">이메일:</label>
+            <input type="email" id="email" name="email" required>
+
+            <!-- 성별 추가 -->
+            <label for="gender">성별:</label>
+            <select id="gender" name="gender" required>
+              <option value="" disabled selected>성별을 선택하세요</option>
+              <option value="남자">남성</option>
+              <option value="여자">여성</option>
+            </select>
+            <button type="submit">추가</button>
+          </form>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</th:block>
+
+</html>

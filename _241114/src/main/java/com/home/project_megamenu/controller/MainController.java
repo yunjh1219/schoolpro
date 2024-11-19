@@ -34,7 +34,7 @@ public class MainController {
 
 
     @GetMapping("/patientDeta")
-    public String patient_details() {return "pages/patient_details";}
+    public String patient_details() {return "pages/patient_info";}
 
 
 }
