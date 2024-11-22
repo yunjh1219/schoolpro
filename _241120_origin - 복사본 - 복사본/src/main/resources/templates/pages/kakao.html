@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <title>main homepage</title>
+    <link rel="stylesheet" th:inline="css" th:href="@{/css/mmenu/msub_booking.css}">
+    <link rel="stylesheet" th:inline="css" th:href="@{/css/mmenu/msub2.css}">
+    <script th:inline="javascript" type="text/javascript" th:src="@{/js/main.js}"></script>
+</head>
+<th:block layout:fragment="content">
+    <div class="content">
+        <!--부킹 내 header-->
+        <div class="booking-header">
+            <div class="image-container">
+                <img src="/img/mmenu1/lgogo.jpg" alt="이미지 설명">
+                <nav class="booking-nav">
+                    <ul>
+                        <li><a href="/rest" class="#">온라인예약</a></li>
+                        <li><a href="/kakao" class="active">카카오톡예약</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!--부킹 내 body-->
+        <div class="booking-body">
+            <div class="booking-body-logo">
+                <span class="bold-text">온라인 상담</span><br>
+                <span class="small-text">상담하고 싶은 내용을 적어주세요</span>
+            </div>
+            <div class="box"></div>
+        </div>
+        <!--부킹 내 body-->
+    </div>
+</th:block>
+</html>
